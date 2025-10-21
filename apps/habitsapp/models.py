@@ -9,7 +9,7 @@ User = get_user_model()
 class Habit(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='habits')
     place = models.CharField(max_length=255)
-    time = models.TimeField()
+    time = models.TimeField(help_text='Время когда нужно напомнить')
     action = models.CharField(max_length=255)
     is_pleasant = models.BooleanField(default=False)
     related_habit = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL, related_name='children')
@@ -29,4 +29,7 @@ class Habit(BaseModel):
             raise ValidationError('У приятной привычки не может быть вознаграждения или связанной привычки.')
         if not (1 <= self.period_days <= 7):
             raise ValidationError('Нельзя выполнять привычку реже, чем 1 раз в 7 дней.')
+
+    def __str__(self):
+        return f'{self.user} | {self.action} - {self.time}'
 

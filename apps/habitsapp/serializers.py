@@ -1,8 +1,10 @@
+from django.contrib.auth import get_user_model
 from rest_framework.exceptions import NotAuthenticated
 from rest_framework import serializers
 
 from apps.habitsapp.models import Habit
 
+User = get_user_model()
 
 class HabitsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -12,13 +14,23 @@ class HabitsSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         request = self.context.get('request')
-        if request and request.get('user') and request.user.is_authenticated:
-            user = request.user
-            habit = Habit.objects.create(
-                user=user,
-                **validated_data
-            )
-            habit.save()
+        if request and hasattr(request, 'user') and request.user.is_authenticated:
+            validated_data['user'] = request.user
+            habit = Habit.objects.create(**validated_data)
             return habit
         raise NotAuthenticated('Пользователь не авторизован')
+
+class RegisterSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, min_length=8)
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'password')
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data.get('email', ''),
+            password=validated_data['password']
+        )
+        return user
 

@@ -14,8 +14,8 @@ class Habit(BaseModel):
     is_pleasant = models.BooleanField(default=False)
     related_habit = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL, related_name='children')
     period_days = models.PositiveSmallIntegerField(default=1)
-    reward = models.TimeField(null=True, blank=True)
-    duration_seconds = models.PositiveSmallIntegerField(default=60)
+    reward = models.TextField(null=True, blank=True)
+    duration_seconds = models.PositiveSmallIntegerField(default=60, help_text='Время выполнения должно быть не больше 120 секунд')
     is_public = models.BooleanField(default=False)
 
     def clean(self):

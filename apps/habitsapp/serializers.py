@@ -34,3 +34,11 @@ class RegisterSerializer(serializers.ModelSerializer):
         )
         return user
 
+
+class UserSerializer(serializers.ModelSerializer):
+    """Сериализатор для пользователей"""
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'first_name', 'last_name']
+        read_only_fields = ['id']

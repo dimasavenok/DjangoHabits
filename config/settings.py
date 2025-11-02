@@ -52,6 +52,7 @@ INSTALLED_APPS = [
 
     "apps.mainapp",
     "apps.habitsapp",
+    "apps.telegramapp",
 ]
 
 MIDDLEWARE = [
@@ -146,3 +147,4 @@ REST_FRAMEWORK = {
     ),
 }
 
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')

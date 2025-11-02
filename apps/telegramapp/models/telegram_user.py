@@ -1,7 +1,11 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 
+from apps.mainapp.models import BaseModel
 
-class TelegramUser(models.Model):
+User = get_user_model()
+
+class TelegramUser(BaseModel):
     """Модель для связи пользователей с Telegram"""
 
     user = models.OneToOneField(
@@ -36,10 +40,7 @@ class TelegramUser(models.Model):
         default=True,
         verbose_name="Активен"
     )
-    created_at = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name="Дата создания"
-    )
+
 
     class Meta:
         verbose_name = "Telegram пользователь"
@@ -47,3 +48,4 @@ class TelegramUser(models.Model):
 
     def __str__(self):
         return f"{self.user.username} ({self.telegram_id})"
+

@@ -26,6 +26,7 @@ urlpatterns = [
     path("api/", include('apps.habitsapp.urls')),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path("api/telegram/", include('apps.telegramapp.urls')),
 
 # OpenAPI схема
     path("schema/", SpectacularAPIView.as_view(), name="schema"),
